@@ -42,11 +42,13 @@ The browser UI now supports maintainer export tasks:
 - copy grouped GitHub issue markdown for a whole roadmap category
 - load starter file-list presets for common repo states
 - save the current repository file list locally and reload it later
+- generate a contributor onboarding pack with a suggested first issue, issue sequence, labels, acceptance criteria, and copyable Markdown
 
 Reusable helpers are exported from `src/helper.js`:
 
 - `buildIssueMarkdown(item)`
 - `buildCategoryIssueMarkdown(group)`
+- `buildContributorOnboardingPack(files, options)`
 - `fileListPresets`
 
 ## Maintainer use cases

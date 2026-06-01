@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   analyzeRepoReadiness,
   buildCategoryIssueMarkdown,
+  buildContributorOnboardingPack,
   buildIssueMarkdown,
   buildMaintainerRoadmap,
   fileListPresets,
@@ -112,4 +113,20 @@ test('provides starter repository file-list presets', () => {
   assert.ok(fileListPresets.some((preset) => preset.id === 'empty-static'));
   assert.ok(fileListPresets.every((preset) => preset.files.includes('README.md') || preset.id === 'empty-static'));
   assert.ok(fileListPresets.every((preset) => preset.description.length > 20));
+});
+
+test('builds a contributor onboarding pack from missing maintainer signals', () => {
+  const pack = buildContributorOnboardingPack(['README.md', 'LICENSE'], {
+    projectName: 'Civic Repairs',
+    limit: 3,
+  });
+
+  assert.equal(pack.projectName, 'Civic Repairs');
+  assert.equal(pack.starterSequence.length, 3);
+  assert.match(pack.suggestedFirstIssue.title, /Roadmap|Beginner-friendly|accessibility|CONTRIBUTING/i);
+  assert.match(pack.markdown, /^# Civic Repairs contributor onboarding pack/m);
+  assert.match(pack.markdown, /Readiness score:/);
+  assert.match(pack.markdown, /Beginner-safe issue sequence/);
+  assert.match(pack.markdown, /Maintainer note/);
+  assert.ok(pack.starterSequence.every((item) => item.acceptanceCriteria.length >= 2));
 });

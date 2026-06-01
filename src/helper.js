@@ -264,3 +264,62 @@ export function buildCategoryIssueMarkdown(group) {
     `Labels: good first issue, ${categoryLabel}`,
   ].join('\n');
 }
+
+export function buildContributorOnboardingPack(files, options = {}) {
+  const projectName = String(options.projectName || 'Open-source project').trim() || 'Open-source project';
+  const roadmap = buildMaintainerRoadmap(files);
+  const todoItems = roadmap
+    .flatMap((group) => group.items.map((item) => ({ ...item, category: group.category })))
+    .filter((item) => item.status === 'todo');
+  const starterSequence = todoItems.slice(0, Number(options.limit || 5)).map((item, index) => ({
+    step: index + 1,
+    title: item.title,
+    category: item.category,
+    labels: item.labels,
+    acceptanceCriteria: item.acceptanceCriteria,
+    why: item.why,
+  }));
+  const readiness = analyzeRepoReadiness(files);
+  const firstIssue = starterSequence[0] || {
+    step: 1,
+    title: 'Refresh starter contributor documentation',
+    category: 'Documentation',
+    labels: ['good first issue', 'documentation'],
+    acceptanceCriteria: ['Confirm setup commands still work', 'Link to the hosted or local demo'],
+    why: 'Even mature repositories need current beginner documentation.',
+  };
+
+  return {
+    projectName,
+    readinessScore: readiness.score,
+    starterSequence,
+    suggestedFirstIssue: firstIssue,
+    markdown: [
+      `# ${projectName} contributor onboarding pack`,
+      '',
+      `Readiness score: ${readiness.score}%`,
+      '',
+      '## Start here',
+      '1. Read the README and open the local or hosted demo.',
+      '2. Pick one small issue from the sequence below.',
+      '3. Comment with the files you expect to touch and the verification command you will run.',
+      '',
+      '## Suggested first issue',
+      `Title: ${firstIssue.title}`,
+      `Labels: ${firstIssue.labels.join(', ')}`,
+      '',
+      '## Beginner-safe issue sequence',
+      ...(starterSequence.length
+        ? starterSequence.flatMap((item) => [
+          `${item.step}. ${item.title}`,
+          `   Category: ${item.category}`,
+          `   Labels: ${item.labels.join(', ')}`,
+          `   Acceptance: ${item.acceptanceCriteria.join('; ')}`,
+        ])
+        : ['1. Keep maintainer files current and verify the demo still works.']),
+      '',
+      '## Maintainer note',
+      'Keep each starter task small, name the expected files, and include one clear verification command.',
+    ].join('\n'),
+  };
+}
