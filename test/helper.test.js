@@ -5,6 +5,7 @@ import {
   buildCategoryIssueMarkdown,
   buildContributorOnboardingPack,
   buildIssueMarkdown,
+  buildMaintainerLaunchPack,
   buildMaintainerRoadmap,
   fileListPresets,
   scoreRepoReadiness,
@@ -129,4 +130,19 @@ test('builds a contributor onboarding pack from missing maintainer signals', () 
   assert.match(pack.markdown, /Beginner-safe issue sequence/);
   assert.match(pack.markdown, /Maintainer note/);
   assert.ok(pack.starterSequence.every((item) => item.acceptanceCriteria.length >= 2));
+});
+
+test('builds maintainer launch packs with labels and onboarding content', () => {
+  const pack = buildMaintainerLaunchPack(['README.md', 'LICENSE'], {
+    projectName: 'Civic Repairs',
+    limit: 2,
+  });
+
+  assert.equal(pack.title, 'Civic Repairs maintainer launch pack');
+  assert.ok(pack.missingLabels.includes('good first issue'));
+  assert.match(pack.markdown, /^# Civic Repairs maintainer launch pack/m);
+  assert.match(pack.markdown, /## Launch checklist/);
+  assert.match(pack.markdown, /## Suggested labels/);
+  assert.match(pack.markdown, /## Contributor onboarding/);
+  assert.match(pack.markdown, /Civic Repairs contributor onboarding pack/);
 });

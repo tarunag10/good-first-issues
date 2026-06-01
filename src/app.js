@@ -3,6 +3,7 @@ import {
   buildCategoryIssueMarkdown,
   buildContributorOnboardingPack,
   buildIssueMarkdown,
+  buildMaintainerLaunchPack,
   buildMaintainerRoadmap,
   fileListPresets,
   suggestGoodFirstIssues,
@@ -145,6 +146,7 @@ function update() {
   const roadmap = buildMaintainerRoadmap(files);
   const issues = suggestGoodFirstIssues(files);
   const onboardingPack = buildContributorOnboardingPack(files, { projectName: 'Open Access UK repo' });
+  const launchPack = buildMaintainerLaunchPack(files, { projectName: 'Open Access UK repo' });
   output.innerHTML = `<h2>Readiness score: ${analysis.score}%</h2>
     <p>${analysis.present.length} of ${analysis.total} maintainer signals found.</p>
     <h3>Found</h3>
@@ -158,6 +160,7 @@ function update() {
       <p>Suggested first issue: <strong>${onboardingPack.suggestedFirstIssue.title}</strong></p>
       <textarea id="onboarding-pack" readonly>${onboardingPack.markdown}</textarea>
       <button id="copy-onboarding-pack" type="button" class="secondary">Copy onboarding pack</button>
+      <button id="copy-launch-pack" type="button" class="secondary">Copy launch pack</button>
     </article>
     <h3>Good-first-issue suggestions</h3>
     <div class="cards">${renderIssues(issues)}</div>`;
@@ -193,6 +196,10 @@ function update() {
 
   document.querySelector('#copy-onboarding-pack').addEventListener('click', async () => {
     await copyText(onboardingPack.markdown);
+  });
+
+  document.querySelector('#copy-launch-pack').addEventListener('click', async () => {
+    await copyText(launchPack.markdown);
   });
 }
 

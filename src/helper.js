@@ -323,3 +323,39 @@ export function buildContributorOnboardingPack(files, options = {}) {
     ].join('\n'),
   };
 }
+
+export function buildMaintainerLaunchPack(files, options = {}) {
+  const projectName = String(options.projectName || 'Open-source project').trim() || 'Open-source project';
+  const analysis = analyzeRepoReadiness(files);
+  const onboarding = buildContributorOnboardingPack(files, { projectName, limit: options.limit || 5 });
+  const roadmap = buildMaintainerRoadmap(files);
+  const missingLabels = [...new Set(
+    roadmap.flatMap((group) => group.items)
+      .filter((item) => item.status === 'todo')
+      .flatMap((item) => item.labels)
+  )].sort();
+
+  return {
+    title: `${projectName} maintainer launch pack`,
+    missingLabels,
+    markdown: [
+      `# ${projectName} maintainer launch pack`,
+      '',
+      'Generated locally in the browser. Nothing was sent to a server.',
+      '',
+      `Readiness score: ${analysis.score}%`,
+      '',
+      '## Launch checklist',
+      '- [ ] Confirm README setup and demo instructions.',
+      '- [ ] Publish contribution, accessibility, security, and conduct routes.',
+      '- [ ] Add beginner-safe issues with labels and acceptance criteria.',
+      '- [ ] Link screenshots, hosted demo, or local demo path.',
+      '',
+      '## Suggested labels',
+      ...missingLabels.map((label) => `- ${label}`),
+      '',
+      '## Contributor onboarding',
+      onboarding.markdown
+    ].join('\n')
+  };
+}
