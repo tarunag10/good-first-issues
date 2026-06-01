@@ -92,6 +92,54 @@ export const checks = [
 const normalize = (value) => value.toLowerCase().trim();
 const roadmapCategories = ['Documentation', 'Accessibility', 'Security', 'Community', 'Demo quality'];
 
+export const fileListPresets = [
+  {
+    id: 'empty-static',
+    name: 'Empty static starter',
+    description: 'A brand-new static project with only an HTML entry point and no maintainer files yet.',
+    files: ['index.html', 'styles.css', 'src/app.js'],
+  },
+  {
+    id: 'basic-community',
+    name: 'Basic community repo',
+    description: 'A small open-source repo with core reuse and contribution documents started.',
+    files: ['README.md', 'LICENSE', 'CONTRIBUTING.md', 'index.html'],
+  },
+  {
+    id: 'civic-beta',
+    name: 'Civic beta project',
+    description: 'A public-service beta with accessibility, security, and issue routing partly in place.',
+    files: [
+      'README.md',
+      'LICENSE',
+      'CONTRIBUTING.md',
+      'ACCESSIBILITY.md',
+      'SECURITY.md',
+      '.github/ISSUE_TEMPLATE/bug_report.md',
+      'public/demo/index.html',
+    ],
+  },
+  {
+    id: 'maintainer-ready',
+    name: 'Maintainer-ready repo',
+    description: 'A mature starter state with governance, templates, labels, roadmap, and onboarding docs.',
+    files: [
+      'README.md',
+      'LICENSE',
+      'CONTRIBUTING.md',
+      'SECURITY.md',
+      'CODE_OF_CONDUCT.md',
+      'ACCESSIBILITY.md',
+      '.github/ISSUE_TEMPLATE/bug_report.md',
+      '.github/ISSUE_TEMPLATE/feature_request.md',
+      '.github/labels.yml',
+      'ROADMAP.md',
+      'docs/getting-started.md',
+      'index.html',
+    ],
+  },
+];
+
 function hasMatch(files, check) {
   const normalizedFiles = files.map(normalize);
   return check.matches.some((needle) => {
@@ -181,4 +229,38 @@ export function buildMaintainerRoadmap(files) {
       items,
     };
   });
+}
+
+export function buildIssueMarkdown(item) {
+  return [
+    '## Summary',
+    item.title,
+    '',
+    '## Why this helps',
+    item.why,
+    '',
+    '## Acceptance criteria',
+    ...item.acceptanceCriteria.map((criterion) => `- [ ] ${criterion}`),
+    '',
+    '## Suggested labels',
+    `Labels: ${item.labels.join(', ')}`,
+  ].join('\n');
+}
+
+export function buildCategoryIssueMarkdown(group) {
+  const categoryLabel = group.category.toLowerCase().replace(/\s+/g, '-');
+  return [
+    `## ${group.category} starter backlog`,
+    `${group.complete}/${group.total} maintainer signals are already present. Use this issue to split or track beginner-safe improvements in this category.`,
+    '',
+    '## Recommendations',
+    ...group.items.map((item) => `- [ ] ${item.title}`),
+    '',
+    '## Acceptance criteria',
+    '- [ ] Each selected task has a clear owner, changed files, and verification command',
+    '- [ ] Completed items link to merged pull requests or follow-up issues',
+    '',
+    '## Suggested labels',
+    `Labels: good first issue, ${categoryLabel}`,
+  ].join('\n');
 }

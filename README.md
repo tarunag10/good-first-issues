@@ -34,6 +34,21 @@ The maintainer helper now generates a grouped roadmap checklist while keeping th
 
 The grouped helper is exported as `buildMaintainerRoadmap(files)` from `src/helper.js` and returns status, labels, rationale, and acceptance criteria for each maintainer signal.
 
+## Slice 2 issue and preset workflow
+
+The browser UI now supports maintainer export tasks:
+
+- copy GitHub issue markdown for each roadmap recommendation
+- copy grouped GitHub issue markdown for a whole roadmap category
+- load starter file-list presets for common repo states
+- save the current repository file list locally and reload it later
+
+Reusable helpers are exported from `src/helper.js`:
+
+- `buildIssueMarkdown(item)`
+- `buildCategoryIssueMarkdown(group)`
+- `fileListPresets`
+
 ## Maintainer use cases
 
 - audit a civic tech repository before inviting new contributors
