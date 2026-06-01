@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open Source Maintainer Helper</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">Open Access UK</a>
+    <nav aria-label="Primary"><a href="#tool">Tool</a><a href="#guidance">Guidance</a><a href="#contribute">Contribute</a></nav>
+  </header>
+  <main>
+    <section class="hero"><div><h1>Open Source Maintainer Helper</h1><p>Generate contributor-friendly project chores: README gaps, security policy, accessibility notes, issue templates, and good-first-issue ideas.</p></div></section><section id="tool" class="grid"><div class="panel"><label for="files">Repository files, labels, or README clues</label><textarea id="files" aria-describedby="file-help">README.md
+LICENSE
+CONTRIBUTING.md</textarea><p id="file-help">Paste one file, label, or visible project signal per line. Everything runs in this page.</p><button id="sample" type="button">Load sample signals</button></div><div id="output" class="preview" aria-live="polite"></div></section>
+  </main>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

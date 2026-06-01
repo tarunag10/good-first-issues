@@ -1,0 +1,53 @@
+# Open Source Maintainer Helper
+
+Checks project readiness and generates contributor-friendly issue ideas for civic and open-source maintainers.
+
+## Demo
+
+Open `index.html` in a browser. This repository is intentionally no-backend and keeps user data local to the browser.
+
+Paste repository file names, labels, or visible README signals into the textarea. The helper checks for:
+
+- README
+- CONTRIBUTING
+- LICENSE
+- SECURITY
+- CODE_OF_CONDUCT
+- accessibility statement
+- issue templates
+- good-first-issue labels
+- roadmap
+- screenshots or demo link
+- beginner-friendly docs
+
+The browser-only demo returns a readiness score, concrete policy/documentation TODOs, and starter issue suggestions with labels and acceptance-oriented descriptions.
+
+## First-slice capability
+
+The maintainer helper now generates a grouped roadmap checklist while keeping the existing readiness score. Recommendations are grouped by:
+
+- documentation
+- accessibility
+- security
+- community
+- demo quality
+
+The grouped helper is exported as `buildMaintainerRoadmap(files)` from `src/helper.js` and returns status, labels, rationale, and acceptance criteria for each maintainer signal.
+
+## Maintainer use cases
+
+- audit a civic tech repository before inviting new contributors
+- create a small backlog of `good first issue` tasks
+- spot missing governance and safety files
+- make static demos easier for beginners to understand
+
+## Open-source basics
+
+- Code: MIT licence
+- Content/templates: use with attribution under CC BY 4.0 where marked
+- Accessibility target: WCAG 2.2 AA
+- Contributions: start with issues labelled `good first issue`
+
+## Safety note
+
+This project provides information and drafting support, not legal advice. Users should check deadlines, local rules, and professional advice where needed.
