@@ -89,6 +89,33 @@ export const checks = [
   },
 ];
 
+export const currentGuidance = [
+  {
+    title: 'Use labels that GitHub can surface',
+    detail: 'GitHub Docs says applying the good first issue label helps public repository issues become easier to find and may increase surfacing to contributors.',
+    source: 'GitHub Docs labels guidance',
+    url: 'https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/encouraging-helpful-contributions-to-your-project-with-labels'
+  },
+  {
+    title: 'Put contribution guidance where GitHub can show it',
+    detail: 'GitHub Docs says CONTRIBUTING.md can live in the repository root, docs, or .github folder, and GitHub surfaces it when people open issues or pull requests.',
+    source: 'GitHub Docs contributor guidelines',
+    url: 'https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors'
+  },
+  {
+    title: 'Use structured issue forms',
+    detail: 'GitHub issue forms can collect text inputs, dropdowns, checkboxes, and file uploads from contributors through files in .github/ISSUE_TEMPLATE.',
+    source: 'GitHub Docs issue templates',
+    url: 'https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository'
+  },
+  {
+    title: 'Make social-impact repos discoverable',
+    detail: 'GitHub for Good First Issue looks for civic or social-impact projects tagged help wanted or good first issue, with detailed README, CONTRIBUTING, and active maintenance.',
+    source: 'GitHub Docs open source for good',
+    url: 'https://docs.github.com/en/nonprofit/contributing-to-open-source-for-good/adding-an-open-source-project'
+  }
+];
+
 const normalize = (value) => value.toLowerCase().trim();
 const roadmapCategories = ['Documentation', 'Accessibility', 'Security', 'Community', 'Demo quality'];
 
@@ -350,6 +377,10 @@ export function buildMaintainerLaunchPack(files, options = {}) {
       '- [ ] Publish contribution, accessibility, security, and conduct routes.',
       '- [ ] Add beginner-safe issues with labels and acceptance criteria.',
       '- [ ] Link screenshots, hosted demo, or local demo path.',
+      '- [ ] Add repository topics, such as civic-tech, accessibility, legaltech, or public-services, when they accurately describe the project.',
+      '',
+      '## Current source notes',
+      ...currentGuidance.map((item) => `- ${item.title}: ${item.detail} Source: ${item.url}`),
       '',
       '## Suggested labels',
       ...missingLabels.map((label) => `- ${label}`),

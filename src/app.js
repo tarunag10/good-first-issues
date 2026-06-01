@@ -5,6 +5,7 @@ import {
   buildIssueMarkdown,
   buildMaintainerLaunchPack,
   buildMaintainerRoadmap,
+  currentGuidance,
   fileListPresets,
   suggestGoodFirstIssues,
   suggestPolicyTodos,
@@ -15,6 +16,7 @@ const output = document.querySelector('#output');
 const sample = document.querySelector('#sample');
 const presets = document.querySelector('#presets');
 const savedExamples = document.querySelector('#saved-examples');
+const currentGuidanceMount = document.querySelector('#current-guidance');
 const savedExamplesKey = 'open-access-uk:saved-file-list-examples';
 
 const sampleFiles = `README.md
@@ -126,6 +128,14 @@ function renderSavedExamples() {
   }
 }
 
+function renderCurrentGuidance() {
+  currentGuidanceMount.innerHTML = currentGuidance.map((item) => `<article class="card">
+    <h3>${item.title}</h3>
+    <p>${item.detail}</p>
+    <a href="${item.url}" rel="noreferrer">${item.source}</a>
+  </article>`).join('');
+}
+
 async function copyText(value) {
   if (navigator.clipboard) {
     await navigator.clipboard.writeText(value);
@@ -213,3 +223,4 @@ input.addEventListener('input', update);
 update();
 renderPresetButtons();
 renderSavedExamples();
+renderCurrentGuidance();

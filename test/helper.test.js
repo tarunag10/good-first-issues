@@ -7,6 +7,7 @@ import {
   buildIssueMarkdown,
   buildMaintainerLaunchPack,
   buildMaintainerRoadmap,
+  currentGuidance,
   fileListPresets,
   scoreRepoReadiness,
   suggestGoodFirstIssues,
@@ -142,7 +143,16 @@ test('builds maintainer launch packs with labels and onboarding content', () => 
   assert.ok(pack.missingLabels.includes('good first issue'));
   assert.match(pack.markdown, /^# Civic Repairs maintainer launch pack/m);
   assert.match(pack.markdown, /## Launch checklist/);
+  assert.match(pack.markdown, /Current source notes/);
+  assert.match(pack.markdown, /good first issue label/);
   assert.match(pack.markdown, /## Suggested labels/);
   assert.match(pack.markdown, /## Contributor onboarding/);
   assert.match(pack.markdown, /Civic Repairs contributor onboarding pack/);
+});
+
+test('exposes current GitHub maintainer guidance sources', () => {
+  assert.equal(currentGuidance.length, 4);
+  assert.ok(currentGuidance.some((item) => item.detail.includes('CONTRIBUTING.md')));
+  assert.ok(currentGuidance.some((item) => item.detail.includes('ISSUE_TEMPLATE')));
+  assert.ok(currentGuidance.every((item) => item.url.startsWith('https://')));
 });
